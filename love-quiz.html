@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #fff9f9;
+      color: #4a2c2a;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .question-card {
+      background-color: white;
+      padding: 30px;
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .choices button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #f0e4e4;
+      transition: background-color 0.3s;
+      width: 100%;
+      max-width: 300px;
+    }
+    .choices button.correct {
+      background-color: #b4e0c5;
+    }
+    .choices button.wrong {
+      background-color: #f6b6b6;
+    }
+    .nav-btn, .back-btn {
+      background-color: #c26477;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    #scoreBox {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💕 How Well Do You Know Me? 💕</h1>
+
+  <div id="quiz-container"></div>
+  <div id="scoreBox"></div>
+  <div id="end-buttons" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bg-music" src="music.mp3" autoplay loop></audio>
+  <audio id="audio1" src="audio1.m4a"></audio>
+  <audio id="audio2" src="audio2.m4a"></audio>
+  <audio id="audio3" src="audio3.m4a"></audio>
+  <audio id="audio4" src="audio4.m4a"></audio>
+  <audio id="audio5" src="audio5.m4a"></audio>
+
+  <script>
+    const questions = [
+      {
+        question: "What’s my favorite nickname for you?",
+        choices: ["Piyo", "Ledookie", "Poopy", "Beb"],
+        correct: 1,
+        audio: 1
+      },
+      {
+        question: "Where did we first meet?",
+        choices: ["Basketball Court", "Blue Mountains", "Library", "Cafetaria"],
+        correct: 0,
+        audio: [4, 3]
+      },
+      {
+        question: "What’s my favorite thing that you cook or bake?",
+        choices: ["Indomie/Samyang", "Steak", "MATCHA LAVA CAKE", "Burger"],
+        correct: 2,
+        audio: [4, 3]
+      },
+      {
+        question: "If we could travel anywhere right now, where would I take you?",
+        choices: ["Maldives", "Japan", "New Zealand", "Korea"],
+        correct: "all",
+        message: "GAS SEMUANYA"
+      },
+      {
+        question: "What do I always notice about you first?",
+        choices: ["Your outfit", "Your smile", "Your eyes", "Your energy"],
+        correct: 3,
+        audio: [4, 3]
+      },
+      {
+        question: "Which one of us always wins at pool? 😏",
+        choices: ["netnot", "dookie", "Same Same laaa", "I let you win"],
+        correct: 0,
+        audioAlways: 2
+      },
+      {
+        question: "Which of these is our little tradition?",
+        choices: ["Late night calls", "Celebrate monthsaries", "Sending good night textss", "Gereja bareng"],
+        correct: 2,
+        audio: [4, 3]
+      },
+      {
+        question: "What do I love doing the most with you?",
+        choices: ["Hugging", "Watch moviess", "Study", "Just being with you"],
+        correct: "all",
+        message: "love u beb"
+      },
+      {
+        question: "Where was our first date?",
+        choices: ["Laperouse", "Dookie’s house", "Uni", "Basketball court"],
+        correct: 0,
+        audio: [4, 3]
+      },
+      {
+        question: "How much do I love you?",
+        choices: ["A lot", "Like crazy", "More than words", "All of the above <3"],
+        correct: "none",
+        message: "HAHH?!?!??!",
+        audio: 5
+      }
+    ];
+
+    let score = 0;
+    let current = 0;
+    let answered = Array(questions.length).fill(false);
+
+    const container = document.getElementById("quiz-container");
+    const scoreBox = document.getElementById("scoreBox");
+
+    function renderQuestion(index) {
+    const q = questions[index];
+    container.innerHTML = '';
+
+    const card = document.createElement("div");
+    card.className = "question-card";
+
+    const qText = document.createElement("h3");
+    qText.textContent = q.question;
+    card.appendChild(qText);
+
+    const choicesDiv = document.createElement("div");
+    choicesDiv.className = "choices";
+
+    const message = document.createElement("div");
+    message.className = "message";
+
+    let hasAnswered = answered[index];
+
+    q.choices.forEach((choice, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.onclick = () => {
+        if (hasAnswered) return;
+
+        const buttons = choicesDiv.querySelectorAll("button");
+        answered[index] = true;
+        hasAnswered = true;
+
+        let isCorrect = false;
+
+        if (q.correct === "all") {
+            buttons.forEach(b => b.classList.add("correct"));
+            message.textContent = q.message;
+            isCorrect = true;
+        } else if (q.correct === "none") {
+            buttons.forEach(b => b.classList.add("wrong"));
+            message.textContent = q.message;
+            playAudio(q.audio);
+        } else {
+            if (i === q.correct) {
+            btn.classList.add("correct");
+            message.textContent = "ANJAYYY";
+            isCorrect = true;
+            playAudio(Array.isArray(q.audio) ? q.audio[0] : q.audio);
+            } else {
+            btn.classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            message.textContent = "LLLLLLLLLLLLLLLLLLLLLL";
+            playAudio(Array.isArray(q.audio) ? q.audio[1] : q.audio);
+            }
+        }
+
+        if (q.audioAlways) playAudio(q.audioAlways);
+        if (isCorrect) score++;
+        if (index === questions.length - 1) calculateScore();
+        };
+        choicesDiv.appendChild(btn);
+    });
+
+    card.appendChild(choicesDiv);
+    card.appendChild(message);
+
+    // Page Counter
+    const pageCounter = document.createElement("div");
+    pageCounter.textContent = `${index + 1}/${questions.length}`;
+    pageCounter.style.margin = "20px 0";
+    pageCounter.style.fontWeight = "bold";
+    card.appendChild(pageCounter);
+
+    // Navigation
+    const nav = document.createElement("div");
+    if (index > 0) {
+        const prev = document.createElement("button");
+        prev.textContent = "Previous";
+        prev.className = "nav-btn";
+        prev.onclick = () => renderQuestion(index - 1);
+        nav.appendChild(prev);
+    }
+
+    if (index < questions.length - 1) {
+        const next = document.createElement("button");
+        next.textContent = "Next";
+        next.className = "nav-btn";
+        next.onclick = () => {
+        if (answered[index]) {
+            renderQuestion(index + 1);
+        } else {
+            alert("Please answer the question before proceeding ❤️");
+        }
+        };
+        nav.appendChild(next);
+    }
+
+    card.appendChild(nav);
+    container.appendChild(card);
+    }
+
+
+    function calculateScore() {
+        let dots = 0;
+        scoreBox.textContent = "Calculating.";
+
+        const interval = setInterval(() => {
+            dots = (dots + 1) % 4;
+            scoreBox.textContent = "Calculating" + ".".repeat(dots);
+        }, 500);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            scoreBox.innerHTML = `Your Love Score: ${score}/10 💖`;
+
+            if (score >= 9) {
+            confettiEffect();
+            }
+
+            // Add Retry Button beside Back
+            const retryBtn = document.createElement("button");
+            retryBtn.textContent = "Retry Quiz";
+            retryBtn.className = "nav-btn";
+            retryBtn.id = "retry-btn";
+            retryBtn.onclick = () => {
+            score = 0;
+            current = 0;
+            answered = Array(questions.length).fill(false);
+            scoreBox.innerHTML = "";
+
+            // Remove retry button
+            const retry = document.getElementById("retry-btn");
+            if (retry) retry.remove();
+
+            // Center the back button again
+            const btnContainer = document.getElementById("end-buttons");
+            btnContainer.style.justifyContent = "center";
+
+            renderQuestion(0);
+            };
+
+            const btnContainer = document.getElementById("end-buttons");
+            btnContainer.insertBefore(retryBtn, btnContainer.firstChild);
+            btnContainer.style.justifyContent = "center"; // initially center both
+        }, 3000);
+    }
+
+    function playAudio(n) {
+      if (!n) return;
+      const audio = document.getElementById("audio" + n);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play();
+      }
+    }
+
+    function goBack() {
+      window.location.href = "surprise.html";
+    }
+
+    function confettiEffect() {
+    const confetti = document.createElement("div");
+    confetti.innerHTML = "🎉🎉🎉";
+    confetti.style.fontSize = "40px";
+    confetti.style.position = "fixed";
+    confetti.style.top = "50%";
+    confetti.style.left = "50%";
+    confetti.style.transform = "translate(-50%, -50%)";
+    confetti.style.zIndex = "9999";
+    confetti.style.animation = "fadeOut 2s forwards";
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => {
+        confetti.remove();
+    }, 2000);
+    }
+
+    // Optional animation
+    const style = document.createElement("style");
+    style.innerHTML = `@keyframes fadeOut {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.5); }
+    }`;
+    document.head.appendChild(style);
+
+    renderQuestion(current);
+
+    document.addEventListener('click', () => {
+        const audio = document.getElementById("bg-music");
+        if (audio) {
+        audio.play().catch(err => console.log("Autoplay blocked", err));
+        }
+    }, { once: true });
+  </script>
+</body>
+</html>

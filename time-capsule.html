@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Capsule</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #fffafa;
+      color: #4a2c2a;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 1em;
+    }
+    textarea {
+      width: 100%;
+      max-width: 500px;
+      height: 150px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      resize: none;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #c06575;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a65463;
+    }
+    blockquote {
+      max-width: 600px;
+      margin: 30px auto;
+      font-style: italic;
+      color: #6c4646;
+      background-color: #fceced;
+      padding: 20px;
+      border-left: 4px solid #c06575;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" src="music.mp3" autoplay loop></audio>
+  <h1>Time Capsule 📦</h1>
+  <p>Write a message to future us — a little note to open on our next anniversary.</p>
+
+  <textarea id="herMessage" placeholder="Your note to future us..."></textarea>
+  <br />
+  <button onclick="saveMessage()">Seal the Message</button>
+
+  <blockquote>
+    One year from now, I hope we look back at this moment with even more love in our hearts. Let's keep growing, laughing, and dreaming together. 💞
+  </blockquote>
+  
+  <p><a href="surprise.html" style="color:#c26477; text-decoration:none;">← Back</a></p>
+
+  <script>
+    function saveMessage() {
+      const msg = document.getElementById('herMessage').value;
+      if (msg.trim()) {
+        localStorage.setItem('futureUsMessage', msg);
+        alert("Your message has been sealed and hidden away. 💌");
+        document.getElementById('herMessage').value = '';
+      } else {
+        alert("Please write a sweet message before sealing it.");
+      }
+    }
+
+    document.addEventListener('click', () => {
+        const audio = document.getElementById("bg-music");
+        if (audio) {
+        audio.play().catch(err => console.log("Autoplay blocked", err));
+        }
+    }, { once: true });
+  </script>
+</body>
+</html>

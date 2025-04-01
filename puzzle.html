@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>You Complete Me 🧩</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #fffaf9;
+      color: #3a2b2b;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #layout {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    #puzzleArea canvas {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+    #referenceBox {
+      background-color: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      width: 320px;
+      position: relative;
+    }
+    #referenceBox h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #555;
+    }
+    #reference {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    #scattered {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      width: 100%;
+    }
+    .piece {
+      width: 90px;
+      height: 60px;
+      cursor: grab;
+      position: absolute;
+      z-index: 1;
+    }
+    .back-btn {
+      background-color: #c26477;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+    <audio id="bg-music" src="music.mp3" autoplay loop></audio>
+  <h1>You Complete Me 🧩</h1>
+  <p>This puzzle might be imaginary, but the love is very real.</p>
+
+  <div id="layout">
+    <div id="puzzleArea">
+      <canvas id="puzzleCanvas" width="750" height="500"></canvas>
+    </div>
+    <div id="referenceBox">
+      <h3>Reference</h3>
+      <img id="reference" src="image (1).jpeg" />
+      <div id="scattered"></div>
+    </div>
+  </div>
+
+  <p id="message"></p>
+  <button class="back-btn" onclick="goBack()">Back</button>
+
+  <script>
+    const canvas = document.getElementById("puzzleCanvas");
+    const ctx = canvas.getContext("2d");
+    const scattered = document.getElementById("scattered");
+    const message = document.getElementById("message");
+
+    const rows = 4;
+    const cols = 5;
+    const pieceWidth = canvas.width / cols;
+    const pieceHeight = canvas.height / rows;
+
+    const image = new Image();
+    image.src = "image (1).jpeg";
+
+    image.onload = () => {
+      createPieces();
+      drawTemplate();
+    };
+
+    function createPieces() {
+      const scatterBoxRect = scattered.getBoundingClientRect();
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const pieceCanvas = document.createElement("canvas");
+          pieceCanvas.width = pieceWidth;
+          pieceCanvas.height = pieceHeight;
+          pieceCanvas.className = "piece";
+
+          const ctxPiece = pieceCanvas.getContext("2d");
+          ctxPiece.drawImage(
+            image,
+            x * image.width / cols,
+            y * image.height / rows,
+            image.width / cols,
+            image.height / rows,
+            0,
+            0,
+            pieceWidth,
+            pieceHeight
+          );
+
+          pieceCanvas.dataset.correctX = x;
+          pieceCanvas.dataset.correctY = y;
+          pieceCanvas.style.position = "absolute";
+
+          // Initial position: randomly inside scattered box
+          const refBox = document.getElementById("referenceBox").getBoundingClientRect();
+          pieceCanvas.style.left = (refBox.left + 20 + Math.random() * 200) + "px";
+          pieceCanvas.style.top = (refBox.bottom + Math.random() * 30) + "px";
+
+          document.body.appendChild(pieceCanvas);
+          makeDraggable(pieceCanvas);
+        }
+      }
+    }
+
+    function drawTemplate() {
+      ctx.strokeStyle = "#ddd";
+      for (let y = 0; y <= rows; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * pieceHeight);
+        ctx.lineTo(canvas.width, y * pieceHeight);
+        ctx.stroke();
+      }
+      for (let x = 0; x <= cols; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * pieceWidth, 0);
+        ctx.lineTo(x * pieceWidth, canvas.height);
+        ctx.stroke();
+      }
+    }
+
+    function makeDraggable(piece) {
+      let offsetX, offsetY;
+      let dragging = false;
+
+      piece.addEventListener("mousedown", (e) => {
+        dragging = true;
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+        piece.style.zIndex = 1000;
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!dragging) return;
+        piece.style.left = e.pageX - offsetX + "px";
+        piece.style.top = e.pageY - offsetY + "px";
+      });
+
+      document.addEventListener("mouseup", (e) => {
+        if (!dragging) return;
+        dragging = false;
+
+        const canvasRect = canvas.getBoundingClientRect();
+        const px = e.clientX - canvasRect.left;
+        const py = e.clientY - canvasRect.top;
+
+        const snapX = Math.floor(px / pieceWidth);
+        const snapY = Math.floor(py / pieceHeight);
+
+        if (
+          snapX == piece.dataset.correctX &&
+          snapY == piece.dataset.correctY
+        ) {
+          ctx.drawImage(piece, snapX * pieceWidth, snapY * pieceHeight, pieceWidth, pieceHeight);
+          piece.remove();
+          checkCompletion();
+        }
+      });
+    }
+
+    function checkCompletion() {
+      if (document.querySelectorAll(".piece").length === 0) {
+        message.textContent = "You complete me ❤️";
+      }
+    }
+
+    function goBack() {
+      window.location.href = "surprise.html";
+    }
+
+    document.addEventListener('click', () => {
+        const audio = document.getElementById("bg-music");
+        if (audio) {
+        audio.play().catch(err => console.log("Autoplay blocked", err));
+        }
+    }, { once: true });
+  </script>
+</body>
+</html>

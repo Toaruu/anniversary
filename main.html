@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Anniversary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #ffe6f0;
+      color: #b30059;
+      margin: 0;
+      text-align: center;
+    }
+    section {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+      line-height: 1.8;
+    }
+    h1, h2 {
+      font-family: 'Dancing Script', cursive;
+    }
+    img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 16px;
+        justify-items: center;
+    }
+
+    .thumb {
+        display: flex;
+        justify-content: center;
+    }
+
+    .polaroid {
+        background: white;
+        padding: 8px 6px 36px 6px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        font-family: 'Courier New', monospace;
+        color: #222;
+    }
+    .polaroid img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: none;
+    }
+    .polaroid:hover {
+        transform: scale(1.03);
+    }
+    .thumb img {
+        width: 100%;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: transform 0.2s ease;
+    }
+    .thumb img:hover {
+        transform: scale(1.05);
+    }
+    .card {
+      background-color: white;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-style: italic;
+    }
+    .button {
+      background-color: #ff66a3;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .button:hover {
+      transform: scale(1.05);
+    }
+    footer {
+      font-size: 14px;
+      padding: 20px;
+      color: #cc0066;
+    }
+  </style>
+  <script>
+    function showSurprise() {
+      window.location.href = 'surprise.html';
+    }
+  </script>
+</head>
+<body>
+    <audio id="bg-music" src="music.mp3" autoplay loop></audio>
+
+  <section>
+    <h1>Happy Anniversary, My Love 💖</h1>
+    <p>Here's a little something I made for you, to celebrate us and everything we've shared so far.</p>
+  </section>
+
+  <section>
+    <h2>Our Story</h2>
+    <p>We first met during a casual basketball game, just two people crossing paths by chance — and yet, that moment sparked something unforgettable. From your heartwarming cooking and baking to the nights we spent playing pool and laughing until our cheeks hurt, every day with you has been magic. You've brought so much joy into my life, and I am forever grateful for you.</p>
+  </section>
+
+  <section>
+    <div style="background:white; padding:20px; border-radius:12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      <h2 style="margin-top:0">Slideshow Memories 🎩</h2>
+      <div id="slideshow" style="margin-bottom: 30px; position: relative;">
+        <img id="slideshow-img" src="image (1).jpeg" style="width:100%; max-width:600px; height:auto; display:block; margin:auto; border: none; box-shadow:0 4px 12px rgba(0,0,0,0.2); transition: opacity 1s ease-in-out;">
+      </div>
+    </div>
+  </section>
+  
+  <section>
+    <h2>Gallery</h2>
+    <div class="gallery">
+      <div class="thumb"><div class="polaroid"><img src="image (37).jpeg" alt="37" onclick="showPopup(this.src)"><p>30/03/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (32).jpeg" alt="32" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (36).jpeg" alt="36" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (30).jpeg" alt="30" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (29).jpeg" alt="29" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (23).jpeg" alt="23" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (26).jpeg" alt="26" onclick="showPopup(this.src)"><p>02/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (35).jpeg" alt="35" onclick="showPopup(this.src)"><p>22/03/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (34).jpeg" alt="34" onclick="showPopup(this.src)"><p>29/03/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (33).jpeg" alt="33" onclick="showPopup(this.src)"><p>27/03/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (24).jpeg" alt="24" onclick="showPopup(this.src)"><p>03/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (25).jpeg" alt="25" onclick="showPopup(this.src)"><p>04/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (21).jpeg" alt="21" onclick="showPopup(this.src)"><p>04/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (27).jpeg" alt="27" onclick="showPopup(this.src)"><p>05/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (22).jpeg" alt="22" onclick="showPopup(this.src)"><p>05/04/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (19).jpeg" alt="19" onclick="showPopup(this.src)"><p>21/06/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (17).jpeg" alt="17" onclick="showPopup(this.src)"><p>27/05/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (15).jpeg" alt="15" onclick="showPopup(this.src)"><p>18/05/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (20).jpeg" alt="20" onclick="showPopup(this.src)"><p>01/12/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (7).jpeg" alt="7" onclick="showPopup(this.src)"><p>07/12/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (6).jpeg" alt="6" onclick="showPopup(this.src)"><p>07/12/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (13).jpeg" alt="13" onclick="showPopup(this.src)"><p>01/07/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (12).jpeg" alt="12" onclick="showPopup(this.src)"><p>12/07/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (9).jpeg" alt="9" onclick="showPopup(this.src)"><p>01/08/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (4).jpeg" alt="4" onclick="showPopup(this.src)"><p>31/07/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (3).jpeg" alt="3" onclick="showPopup(this.src)"><p>05/08/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (11).jpeg" alt="11" onclick="showPopup(this.src)"><p>11/08/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (10).jpeg" alt="10" onclick="showPopup(this.src)"><p>11/08/2024</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (40).jpeg" alt="40" onclick="showPopup(this.src)"><p>15/01/2025</p></div></div>
+      <div class="thumb"><div class="polaroid"><img src="image (39).jpeg" alt="39" onclick="showPopup(this.src)"><p>15/01/2025</p></div></div>
+    </div>
+  </section>
+  
+  <div id="popup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000;">
+    <img id="popup-img" src="" style="height:90vh; object-fit:contain;">
+  </div>
+
+  <section>
+    <h2>Love Letter</h2>
+    <div class="card">
+      <p>My dearest love,</p>
+      <p>Every moment with you is a memory I treasure. From your kind heart to your warm embrace, you make the world feel right. You’ve stood by me in ways I can’t describe, and I fall more in love with you every single day.</p>
+      <p>I know this is just a webpage, but it holds my love, piece by piece. Here’s to every laugh, every hug, and every promise we've made. I love you now and forever.</p>
+      <p>Forever yours,<br/>Nathan</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Surprise! 🎁</h2>
+    <p>Click the button to reveal a little extra surprise from me to you ✨</p>
+    <button class="button" onclick="showSurprise()">Click Me</button>
+  </section>
+
+  <footer>
+    Made with ❤️ for the most amazing girl in the world
+  </footer>
+
+  <script>
+    const popup = document.getElementById('popup');
+    const popupImg = document.getElementById('popup-img');
+    popup.onclick = () => popup.style.display = 'none';
+    function showPopup(src) {
+        popupImg.src = src;
+        popup.style.display = 'flex';
+    }
+
+    const slideshowImages = [
+        "image (1).jpeg", "image (14).jpeg", "image (8).jpeg",
+        "image (16).jpeg", "image (28).jpeg", "image (31).jpeg"
+    ];
+    let currentSlide = 0;
+    function updateSlide() {
+        const img = document.getElementById("slideshow-img");
+        img.style.opacity = 0;
+        setTimeout(() => {
+        img.src = slideshowImages[currentSlide];
+        img.style.opacity = 1;
+        }, 500);
+        currentSlide = (currentSlide + 1) % slideshowImages.length;
+    }
+    setInterval(updateSlide, 3000);
+
+    document.addEventListener('click', () => {
+        const audio = document.getElementById("bg-music");
+        if (audio) {
+        audio.play().catch(err => console.log("Autoplay blocked", err));
+        }
+    }, { once: true });
+  </script>
+  
+  
+</body>
+</html>
